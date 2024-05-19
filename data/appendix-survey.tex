@@ -6,63 +6,25 @@
 \title{Title of the Survey}
 \maketitle
 
-
 \tableofcontents
 
+\section{Neural field representations.} Neural field representations mark an innovative departure from conventional methods such as meshes, volumes, and point clouds, heralding a paradigm shift in 3D content generation and modeling. The adaptability and precision of field representation render it remarkably proficient in replicating real-world scene geometry and appearance. Particularly noteworthy are seminal approaches like NeRF \cite{nerf} and subsequent developments such as Mip-NeRF \cite{mipnerf} and Tensor-NeRF \cite{tensorf}, which have introduced high-fidelity rendering capabilities, especially in novel view synthesis and diverse applications.
 
-本科生的外文资料调研阅读报告。
+While many neural field representations portray 3D geometry as a density field primarily for rendering purposes, recent advancements advocate volumetric Signed Distance Fields (SDFs) as a superior alternative for enhanced surface reconstruction in volume rendering. However, challenges persist in exporting both density- and SDF-based models as meshes, resulting in a discernible degradation of rendering quality. Our work comprehensively tackles this challenge by introducing a solution that transforms volumetric neural field representations into high-quality manifold meshes. This transformation not only ensures exceptional rendering quality but also expands the scope of 3D applications, including physical simulation. Moreover, the capability to export meshes alongside corresponding materials, textures, and lighting conditions contributes to expedited rendering speeds.
 
+\section{Differentiable ray tracing.} Ray tracing stands as a classical, pivotal, and highly effective rendering technique capable of accurately modeling illumination and yielding 100\% precise rendering outcomes. However, the realm of differentiable ray tracing presents a considerable challenge due to the presence of Dirac delta terms in the derivative of the integrand at occlusion boundaries, posing a significant hurdle for traditional sampling methods.
 
-\section{Figures and Tables}
+Prior research efforts \cite{N3MR, OpenDR} have addressed this challenge by resorting to simpler rendering models that overlook secondary effects such as shadows and indirect illumination. Another innovative approach proposed in \cite{DiffMCRT} involves explicit sampling of triangle edges, necessitating novel spatial acceleration strategies and importance sampling techniques. Furthermore, \cite{Mitsuba3} introduces a differentiable ray tracing system leveraging its own Dr.Jit compiler to expedite both the ray tracing process and its inverse counterpart. While some works resort to finite differences, which may suffice for straightforward geometries, they fail to offer a comprehensive solution to the complete light transport equation. Given the complexities involved in calculating derivatives with respect to geometry and optimizing meshes, we opt to maintain fixed geometry while optimizing other parameters such as lighting and materials to achieve better outcomes.
 
-\subsection{Figures}
+\section{Differentiable rasterization.} Differentiable rasterization stands as a pivotal paradigm in the fields of computer graphics and computer vision, offering a fresh approach to bridging the gap between traditional rendering methods and modern deep learning techniques. This method encompasses various strategies that imbue rasterization processes with differentiability, facilitating seamless integration into end-to-end differentiable pipelines.
 
-An example figure in appendix (Figure~\ref{fig:appendix-survey-figure}).
+In differentiable rasterization, geometric attributes such as vertices, edges, and faces are treated as continuous variables, enabling the computation of gradients with respect to these attributes. This enables neural networks to seamlessly incorporate rasterization, allowing the network to directly learn and optimize geometric attributes from image data.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\linewidth]{example-image-a.pdf}
-  \caption{Example figure in appendix}
-  \label{fig:appendix-survey-figure}
-\end{figure}
+In this study, we focus on investigating nvdiffrast \cite{nvdiffrast}, a comprehensive framework comprising four distinct stages: rasterization, interpolation, texture lookup, and anti-aliasing. Our primary emphasis lies in the rasterization stage, responsible for transforming geometric triangles from the three-dimensional domain to their corresponding positions in pixel space. Additionally, we pay particular attention to the interpolation stage, which provides the necessary three-dimensional pixel coordinates required for querying the appearance network.
 
+\section{Inverse rendering.} Numerous studies \cite{d3c, xdd, svb} have proposed methods for inferring the geometry and material properties of real-world objects using collections of images. However, these approaches often require controlled lighting conditions or rely on learned domain-specific priors to address ambiguities in inverse rendering. In contrast, our work aims to estimate geometry, materials, and lighting simultaneously from images captured under unknown lighting conditions.
 
-\subsection{Tables}
-
-An example table in appendix (Table~\ref{tab:appendix-survey-table}).
-
-\begin{table}
-  \centering
-  \caption{Example table in appendix}
-  \begin{tabular}{ll}
-    \toprule
-    File name       & Description                                         \\
-    \midrule
-    thuthesis.dtx   & The source file including documentation and comments \\
-    thuthesis.cls   & The template file                                   \\
-    thuthesis-*.bst & BibTeX styles                                       \\
-    thuthesis-*.bbx & BibLaTeX styles for bibliographies                  \\
-    thuthesis-*.cbx & BibLaTeX styles for citations                       \\
-    \bottomrule
-  \end{tabular}
-  \label{tab:appendix-survey-table}
-\end{table}
-
-
-\section{Equations}
-
-An example equation in appendix (Equation~\eqref{eq:appendix-survey-equation}).
-\begin{equation}
-  \frac{1}{2 \uppi \symup{i}} \int_\gamma f = \sum_{k=1}^m n(\gamma; a_k) \mathscr{R}(f; a_k)
-  \label{eq:appendix-survey-equation}
-\end{equation}
-
-
-\section{Citations}
-
-Example\cite{dupont1974bone} citations\cite{merkt1995rotational} in appendix
-\cite{dupont1974bone,merkt1995rotational}.
-
+While neural representations have been applied to inverse rendering tasks, they face limitations due to the computation-intensive MLP architecture. This constraint poses a significant computational burden, especially when calculating secondary shading effects like shadows, which necessitate extensive sampling of secondary rays. To overcome this challenge, we employ an advanced TensoRF \cite{tensorf} representation that utilizes factorized tensors, enabling rapid reconstruction. Our TensoRF-based approach facilitates swift density and radiance evaluation, allowing for efficient real-time computation of secondary effects. Consequently, we achieve more accurate modeling of shadows and indirect lighting during the reconstruction process, thereby enhancing overall reconstruction accuracy.
 
 % 默认使用正文的参考文献样式；
 % 如果使用 BibTeX，可以切换为其他兼容 natbib 的 BibTeX 样式。

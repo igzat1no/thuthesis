@@ -3,37 +3,27 @@
 % 中英文摘要和关键字
 
 \begin{abstract}
-  论文的摘要是对论文研究内容和成果的高度概括。
-  摘要应对论文所研究的问题及其研究目的进行描述，对研究方法和过程进行简单介绍，对研究成果和所得结论进行概括。
-  摘要应具有独立性和自明性，其内容应包含与论文全文同等量的主要信息。
-  使读者即使不阅读全文，通过摘要就能了解论文的总体内容和主要成果。
-
-  论文摘要的书写应力求精确、简明。
-  切忌写成对论文书写内容进行提要的形式，尤其要避免“第 1 章……；第 2 章……；……”这种或类似的陈述方式。
-
-  关键词是为了文献标引工作、用以表示全文主要内容信息的单词或术语。
-  关键词不超过 5 个，每个关键词中间用分号分隔。
-
+  逆渲染是计算机图形学和计算机视觉中非常重要的一个问题，即从多视角图像中重建物体的三维几何结构、表面材质和环境照明。在本文中，我们提出了一种新的方法来解决逆渲染问题。值得一提的是，我们的方法考虑了间接光照和遮挡，并较为精确地重建了物体的表面反射率，而现有方法还原的反射率通常会受到阴影和间接光照烘焙在其中的影响。我们的方法的关键在于一种交替优化的框架，同时包含可微的光栅化和可微光线追踪。首先，我们借助 TensoIR 来初始化密度和 BRDF 参数的空间场。接下来，我们的方法在两个优化过程之间交替进行。首先，我们使用可微分的光栅化器来进一步优化密度场和参数场。我们通过可微 Marching Cube 提取表面信息，并使用标准光栅化进行第一次渲染。然后，我们固定重建的几何信息，通过光线追踪框架优化材质和照明参数。在之后的反复训练中，我们将可微光线追踪优化的间接光照进一步结合到可微光栅化中，以鼓励生成更准确的材质信息。我们的框架在可微光栅化中优化几何，在可微光线追踪流水线中模拟准确的全局照明和光线传输，最终产生比单独使用可微分光栅化或光线追踪更准确的几何、材质和环境光照。
   % 关键词用“英文逗号”分隔，输出时会自动处理为正确的分隔符
   \thusetup{
-    keywords = {关键词 1, 关键词 2, 关键词 3, 关键词 4, 关键词 5},
+    keywords = {三维重建,逆渲染,可微光栅化,可微光线追踪},
   }
 \end{abstract}
 
-\begin{abstract*}
-  An abstract of a dissertation is a summary and extraction of research work and contributions.
-  Included in an abstract should be description of research topic and research objective, brief introduction to methodology and research process, and summary of conclusion and contributions of the research.
-  An abstract should be characterized by independence and clarity and carry identical information with the dissertation.
-  It should be such that the general idea and major contributions of the dissertation are conveyed without reading the dissertation.
+% \begin{abstract*}
+%   An abstract of a dissertation is a summary and extraction of research work and contributions.
+%   Included in an abstract should be description of research topic and research objective, brief introduction to methodology and research process, and summary of conclusion and contributions of the research.
+%   An abstract should be characterized by independence and clarity and carry identical information with the dissertation.
+%   It should be such that the general idea and major contributions of the dissertation are conveyed without reading the dissertation.
 
-  An abstract should be concise and to the point.
-  It is a misunderstanding to make an abstract an outline of the dissertation and words “the first chapter”, “the second chapter” and the like should be avoided in the abstract.
+%   An abstract should be concise and to the point.
+%   It is a misunderstanding to make an abstract an outline of the dissertation and words “the first chapter”, “the second chapter” and the like should be avoided in the abstract.
 
-  Keywords are terms used in a dissertation for indexing, reflecting core information of the dissertation.
-  An abstract may contain a maximum of 5 keywords, with semi-colons used in between to separate one another.
+%   Keywords are terms used in a dissertation for indexing, reflecting core information of the dissertation.
+%   An abstract may contain a maximum of 5 keywords, with semi-colons used in between to separate one another.
 
-  % Use comma as separator when inputting
-  \thusetup{
-    keywords* = {keyword 1, keyword 2, keyword 3, keyword 4, keyword 5},
-  }
-\end{abstract*}
+%   % Use comma as separator when inputting
+%   \thusetup{
+%     keywords* = {keyword 1, keyword 2, keyword 3, keyword 4, keyword 5},
+%   }
+% \end{abstract*}
