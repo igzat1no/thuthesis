@@ -3,27 +3,18 @@
 % 中英文摘要和关键字
 
 \begin{abstract}
-  逆渲染是计算机图形学和计算机视觉中非常重要的一个问题，即从多视角图像中重建物体的三维几何结构、表面材质和环境照明。在本文中，我们提出了一种新的方法来解决逆渲染问题。值得一提的是，我们的方法考虑了间接光照和遮挡，并较为精确地重建了物体的表面反射率，而现有方法还原的反射率通常会受到阴影和间接光照烘焙在其中的影响。我们的方法的关键在于一种交替优化的框架，同时包含可微的光栅化和可微光线追踪。首先，我们借助 TensoIR 来初始化密度和 BRDF 参数的空间场。接下来，我们的方法在两个优化过程之间交替进行。首先，我们使用可微分的光栅化器来进一步优化密度场和参数场。我们通过可微 Marching Cube 提取表面信息，并使用标准光栅化进行第一次渲染。然后，我们固定重建的几何信息，通过光线追踪框架优化材质和照明参数。在之后的反复训练中，我们将可微光线追踪优化的间接光照进一步结合到可微光栅化中，以鼓励生成更准确的材质信息。我们的框架在可微光栅化中优化几何，在可微光线追踪流水线中模拟准确的全局照明和光线传输，最终产生比单独使用可微分光栅化或光线追踪更准确的几何、材质和环境光照。
+  三维重建与逆渲染，即从多视角图像中重建物体的三维几何结构、表面材质和环境照明，是计算机视觉和计算机图形学领域中非常重要的一个问题。在本文中，我们提出了一种新的方法来解决三维重建和逆渲染问题。值得一提的是，我们的方法考虑了间接光照和遮挡，并较为精确地重建了物体的漫反射颜色，而现有方法还原的漫反射颜色通常会受到阴影和间接光照的影响。我们的方法的关键在于一种交替优化的框架，交替优化可微光栅化和可微光线追踪。首先，我们借助 修改版 TensoIR 来初始化密度和 BRDF 参数的空间场。接下来，我们的方法在两个优化过程之间交替进行。首先，我们使用可微光栅化来进一步优化密度场和参数场。我们通过可微 Marching Cube 提取物体的几何表面信息，并使用标准光栅化进行第一次渲染。然后，我们固定重建的几何信息，通过可微光线追踪框架优化材质和照明参数。在之后的反复训练中，我们将可微光线追踪优化的间接光照进一步结合到可微光栅化中，以鼓励生成更准确的材质信息。我们的框架在可微光栅化中优化几何，在可微光线追踪中模拟准确的全局照明和光线传输，最终产生比单独使用可微分光栅化或光线追踪更准确的几何、材质和环境光照。
   % 关键词用“英文逗号”分隔，输出时会自动处理为正确的分隔符
   \thusetup{
     keywords = {三维重建,逆渲染,可微光栅化,可微光线追踪},
   }
 \end{abstract}
 
-% \begin{abstract*}
-%   An abstract of a dissertation is a summary and extraction of research work and contributions.
-%   Included in an abstract should be description of research topic and research objective, brief introduction to methodology and research process, and summary of conclusion and contributions of the research.
-%   An abstract should be characterized by independence and clarity and carry identical information with the dissertation.
-%   It should be such that the general idea and major contributions of the dissertation are conveyed without reading the dissertation.
+\begin{abstract*}
+  Inverse rendering is a crucial problem in computer graphics and computer vision, aiming to reconstruct the three-dimensional geometry, surface materials, and environmental illumination of objects from multi-view images. In this paper, we present a novel method to address the inverse rendering problem. Notably, our method takes indirect light and occlusion into consideration and recovers albedo maps of objects free of baked illumination artifacts, which are common in baseline methods. The key of our method is an alternating optimization framework involving both differentiable rasterization and differentiable ray tracing. First, we pre-train TensoIR to initialize spatial fields of densities and BRDF parameters. Next, our method alternates between 2 optimization procedures. First, we use differentiable rasterizer to further optimize the density field, parameter field, by extracting the surface with differentiable marching cubes, rendering with standard rasterization with first-bounce lighting. Next, we fix the mesh geometry and optimizes lighting and BRDF parameters in a ray tracing framework. The optimized indirect lighting and occlusion maps from differentiable ray tracing are further combined into differentiable rasterization to encourage generating more accurate BRDF parameters. Our framework optimizes for geometry in the rasterization pipeline, and models accurate full light-transport in the ray tracing pipeline, eventually produces better geometry and BRDF parameters than differentiable rasterization or ray tracing alone.
 
-%   An abstract should be concise and to the point.
-%   It is a misunderstanding to make an abstract an outline of the dissertation and words “the first chapter”, “the second chapter” and the like should be avoided in the abstract.
-
-%   Keywords are terms used in a dissertation for indexing, reflecting core information of the dissertation.
-%   An abstract may contain a maximum of 5 keywords, with semi-colons used in between to separate one another.
-
-%   % Use comma as separator when inputting
-%   \thusetup{
-%     keywords* = {keyword 1, keyword 2, keyword 3, keyword 4, keyword 5},
-%   }
-% \end{abstract*}
+  % Use comma as separator when inputting
+  \thusetup{
+    keywords* = {3D reconstruction, inverse rendering, differentiable rasterization, differentiable ray tracing},
+  }
+\end{abstract*}

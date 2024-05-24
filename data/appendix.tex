@@ -2,59 +2,28 @@
 
 \chapter{补充内容}
 
-附录是与论文内容密切相关、但编入正文又影响整篇论文编排的条理和逻辑性的资料，例如某些重要的数据表格、计算程序、统计表等，是论文主体的补充内容，可根据需要设置。
+\section{现有可微光线追踪算法比较分析} \label{sec:compare}
 
-附录中的图、表、数学表达式、参考文献等另行编序号，与正文分开，一律用阿拉伯数字编码，
-但在数码前冠以附录的序号，例如“图~\ref{fig:appendix-figure}”，
-“表~\ref{tab:appendix-table}”，“式\eqref{eq:appendix-equation}”等。
+在选择自行实现可微光线追踪框架前，我们调研并比较了多个现有可微光线追踪算法框架，主要包括 Mitsuba3 \cite{Mitsuba3}、Pyredner \cite{DiffMCRT}、Psdr-jit \cite{psdrjit}。下面我们对其进行简要的比较分析。
 
+\subsection{Mitsuba3}
 
-\section{插图}
+Mitsuba3 是由 Wenzel Jakob 等人开发的一款基于物理的渲染器，支持多种渲染算法，包括光线追踪、路径追踪、双向路径追踪等。该渲染器的计算框架基于Dr.Jit \cite{Drjit}，这是一个高效的、用于数值计算和自动微分的库，使Mitsuba3能够实现可微光线追踪。这种能力使得它在计算机图形学和计算机视觉领域，特别是在需要梯度信息的优化任务中，具有极高的应用价值。
 
-% 附录中的插图示例（图~\ref{fig:appendix-figure}）。
+Mitsuba3 的一个显著优点是其Python接口封装得非常好，使得用户可以方便地调用各种功能。然而，尽管Mitsuba3在多方面表现出色，但其与PyTorch的兼容性却存在一定的问题。由于 Mitsuba3 基于 Dr.Jit，其与 Pytorch 并不兼容，梯度之间的传递非常困难。虽然 Mitsuba3 提供了一些可以与Pytorch兼容的方法，但是仍旧无法完全解决兼容问题。此外，非常好的封装性也意味着我们很难实现自定义模块。
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\linewidth]{example-image-a.pdf}
-  \caption{附录中的图片示例}
-  \label{fig:appendix-figure}
-\end{figure}
+我们的主要模型都是基于 Pytorch 框架实现的。我们尝试通过导出纹理图并单独使用 Mitsuba 优化，以将两者分开，然而这种方法并不高效，并且在导出纹理图时会产生误差，导致结果并不令人满意。
 
+\subsection{Pyredner}
 
-\section{表格}
+Redner 是由 Tzu-mao Li 等人开发的可微渲染器，Pyredner 是它的 python 版本。这个渲染器主要依照论文 Differentiable Monte Carlo Ray Tracing through Edge Sampling \cite{DiffMCRT} 实现。
 
-% 附录中的表格示例（表~\ref{tab:appendix-table}）。
+Pyredner 本身依赖 Pytorch 框架进行开发，因此很容易与我们的模型兼容。Pyredner 的优点在于其简单易用，而且支持多种渲染算法，包括光线追踪、路径追踪等。然而，Pyredner 也存在一些问题，例如其文档不够完善，很多功能没有详细的说明，使得用户很难使用。关键问题在于，Pyredner 在2020年已经停止更新，这也导致其与最新版本的硬件不适配。我们也很难在 Pyredner 的基础上进行二次开发来满足我们的需求。
 
-\begin{table}
-  \centering
-  \caption{附录中的表格示例}
-  \begin{tabular}{ll}
-    \toprule
-    文件名          & 描述                         \\
-    \midrule
-    thuthesis.dtx   & 模板的源文件，包括文档和注释 \\
-    thuthesis.cls   & 模板文件                     \\
-    thuthesis-*.bst & BibTeX 参考文献表样式文件    \\
-    thuthesis-*.bbx & BibLaTeX 参考文献表样式文件  \\
-    thuthesis-*.cbx & BibLaTeX 引用样式文件        \\
-    \bottomrule
-  \end{tabular}
-  \label{tab:appendix-table}
-\end{table}
+\subsection{Psdr-jit}
 
+Psdr-jit是一款强大的可微渲染框架，顾名思义，这个框架同样基于Dr.Jit计算框架构建而成。它的前身是 Psdr-cuda，是一款基于物理的可微渲染器，用 C++17/CUDA 编写，并基于论文 Path-Space Differentiable Rendering \cite{PSDR} 实现。相较于其他两个渲染器，Psdr-jit 相对轻量级，同时他也支持GPU加速以及关于任意场景参数的梯度计算。
 
-\section{数学表达式}
-
-% 附录中的数学表达式示例（式\eqref{eq:appendix-equation}）。
-\begin{equation}
-  \frac{1}{2 \uppi \symup{i}} \int_\gamma f = \sum_{k=1}^m n(\gamma; a_k) \mathscr{R}(f; a_k)
-  \label{eq:appendix-equation}
-\end{equation}
-
-
-\section{文献引用}
-
-附录\cite{dupont1974bone}中的参考文献引用\cite{zhengkaiqing1987}示例
-\cite{dupont1974bone,zhengkaiqing1987}。
+然而，与 Mitsuba3 类似，Psdr-jit同样基于 Dr.Jit 计算框架，导致梯度传递出现困难。此外，由于这是一个两人开发的小型渲染器，其说明文档并不完善，使得用户很难使用。因此我们无法选择 Psdr-jit 作为我们的基础框架。
 
 \printbibliography
